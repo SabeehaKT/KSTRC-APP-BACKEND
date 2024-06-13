@@ -1,6 +1,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
+const jwt = require("jsonwebtoken")
 const {ksrtcmodel} = require("./models/ksrtc")
 const bcryptjs = require("bcryptjs")
 
@@ -36,7 +37,13 @@ app.post("/login",(req,res)=>{
                 console.log(dbPassword)
                 bcryptjs.compare(input.pass,dbPassword,(error,isMatch)=>{
                     if (isMatch) {
-                        res.json({"status":"success","userId":response[0]._id})
+                        jwt.sign({email:input.enailid},"ksrtc-app",{expiresIn:"2d"},(error,token)=>{
+                            if (error) {
+                                res.json("unable to create a token")
+                            } else {
+                                res.json({"status":"success","userId":response[0]._id,"token":token})   
+                            }
+                        })
                     } else {
                         res.json({"status":"Incorrect"})
                     }
