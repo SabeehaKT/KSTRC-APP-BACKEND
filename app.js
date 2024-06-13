@@ -55,6 +55,22 @@ app.post("/login",(req,res)=>{
     ).catch()
 })
 
+app.post("/viewusers",(req,res)=>{
+    let token = req.headers["token"]
+    jwt.verify(token,"ksrtc-app",(error,decoded)=>{
+        if (error) {
+            resjson({"status":"unauthorized access"})
+        } else {
+            if(decoded){
+                ksrtcmodel.find().then(
+                    (response)=>{
+                        res.json(response)
+                    }
+                ).catch()
+            }
+        }
+    })
+})
 
 app.listen(8080,()=>{
     console.log("server started")
