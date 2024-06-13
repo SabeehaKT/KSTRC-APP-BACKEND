@@ -4,6 +4,7 @@ const cors = require("cors")
 const jwt = require("jsonwebtoken")
 const {ksrtcmodel} = require("./models/ksrtc")
 const bcryptjs = require("bcryptjs")
+const {busmodel} = require("./models/bus")
 
 const app = express()
 app.use(cors())
@@ -72,6 +73,33 @@ app.post("/viewusers",(req,res)=>{
     })
 })
 
+app.post("/add",(req,res)=>{
+    let input = req.body
+    let bus = new busmodel(input)
+    bus.save()
+    res.json({"status":"success"})
+})
+
+app.post("/search",(req,res)=>{
+    let input = req.body
+    busmodel.find(input).then(
+        (data)=>{
+            res.json(data)
+        }
+    ).catch(
+        (error)=>{
+            res.json(error)
+        }
+    )
+})
+
+app.post("/view",(req,res)=>{
+    busmodel.find().then(
+        (data)=>{
+            res.json(data)
+        }
+    ).catch()
+})
 app.listen(8080,()=>{
     console.log("server started")
 })
