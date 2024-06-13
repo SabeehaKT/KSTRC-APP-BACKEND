@@ -29,7 +29,7 @@ app.post("/register", async (req,res)=>{
 
 app.post("/login",(req,res)=>{
     let input = req.body
-    ksrtcmodel.find({"uname":req.body.uname}).then(
+    ksrtcmodel.find({"name":req.body.name}).then(
         (response)=>{
             if (response.length > 0) {
                 let dbPassword = response[0].pass
