@@ -28,6 +28,18 @@ app.post("/register", async (req,res)=>{
     res.json({"status":"success"})
 })
 
+app.post("/delete",(req, res)=> {
+    let input = req.body
+    busmodel.findByIdAndDelete(input._id).then(
+        (response) => {
+            res.json({ "status": "success" })
+        }
+    ).catch(
+        (error) => {
+            res.json(error)
+        }
+    )
+})
 
 app.post("/login",(req,res)=>{
     let input = req.body
